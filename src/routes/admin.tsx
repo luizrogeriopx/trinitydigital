@@ -35,6 +35,8 @@ import {
   Shield,
   Key,
   EyeOff,
+  Upload,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -140,6 +142,106 @@ function AdminPage() {
 
   // Projetos Form fields
   const [localProjetos, setLocalProjetos] = useState(projetos);
+
+  // States to track image upload progress
+  const [uploadingProjIndex, setUploadingProjIndex] = useState<number | null>(null);
+  const [uploadingPostIndex, setUploadingPostIndex] = useState<number | null>(null);
+
+  const handleUploadProjImagem = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Por favor, selecione um arquivo de imagem válido.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("A imagem deve ter no máximo 5MB.");
+      return;
+    }
+
+    try {
+      setUploadingProjIndex(index);
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const filePath = `projetos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("portfolio")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("portfolio").getPublicUrl(filePath);
+
+      const copy = [...localProjetos];
+      copy[index].imagem = publicUrl;
+      setLocalProjetos(copy);
+      toast.success("Imagem do projeto enviada com sucesso!");
+    } catch (err: any) {
+      console.error("Erro ao fazer upload da imagem do projeto:", err);
+      toast.error(`Erro ao enviar imagem: ${err.message || "Erro desconhecido"}`);
+    } finally {
+      setUploadingProjIndex(null);
+    }
+  };
+
+  const handleUploadPostImagem = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Por favor, selecione um arquivo de imagem válido.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("A imagem deve ter no máximo 5MB.");
+      return;
+    }
+
+    try {
+      setUploadingPostIndex(index);
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const filePath = `blog/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("portfolio")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("portfolio").getPublicUrl(filePath);
+
+      const copy = [...localPosts];
+      copy[index].imagem = publicUrl;
+      setLocalPosts(copy);
+      toast.success("Imagem de capa do blog enviada com sucesso!");
+    } catch (err: any) {
+      console.error("Erro ao fazer upload da imagem de capa:", err);
+      toast.error(`Erro ao enviar imagem: ${err.message || "Erro desconhecido"}`);
+    } finally {
+      setUploadingPostIndex(null);
+    }
+  };
 
   // Servicos Form fields
   const [localServicos, setLocalServicos] = useState(servicos);
@@ -1417,18 +1519,78 @@ function AdminPage() {
                               }}
                             />
                           </div>
-                          <div className="space-y-2">
+                          <div className="space-y-2 sm:col-span-3">
                             <Label className="text-xs font-semibold text-muted-foreground block">
-                              Caminho/URL da Imagem
+                              Imagem do Projeto (Upload)
                             </Label>
-                            <Input
-                              value={proj.imagem}
-                              onChange={(e) => {
-                                const copy = [...localProjetos];
-                                copy[index].imagem = e.target.value;
-                                setLocalProjetos(copy);
-                              }}
-                            />
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center border p-3 rounded-lg bg-background">
+                              {proj.imagem ? (
+                                <div className="relative group size-16 rounded-lg overflow-hidden border border-border bg-secondary shrink-0">
+                                  <img
+                                    src={proj.imagem}
+                                    alt="Preview"
+                                    className="w-full h-full object-cover"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const copy = [...localProjetos];
+                                      copy[index].imagem = "";
+                                      setLocalProjetos(copy);
+                                    }}
+                                    className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-[10px] font-medium cursor-pointer"
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="size-16 rounded-lg border border-dashed border-border bg-secondary flex items-center justify-center text-muted-foreground shrink-0">
+                                  <Upload className="size-4" />
+                                </div>
+                              )}
+                              <div className="flex-1 space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    id={`upload-proj-${index}`}
+                                    className="hidden"
+                                    onChange={(e) => handleUploadProjImagem(e, index)}
+                                    disabled={uploadingProjIndex === index}
+                                  />
+                                  <Button
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                    className="rounded-full cursor-pointer h-8 text-xs"
+                                    disabled={uploadingProjIndex === index}
+                                  >
+                                    <label
+                                      htmlFor={`upload-proj-${index}`}
+                                      className="flex items-center gap-1.5 cursor-pointer"
+                                    >
+                                      {uploadingProjIndex === index ? (
+                                        <Loader2 className="size-3.5 animate-spin" />
+                                      ) : (
+                                        <Upload className="size-3.5" />
+                                      )}
+                                      {uploadingProjIndex === index
+                                        ? "Enviando..."
+                                        : "Escolher Imagem"}
+                                    </label>
+                                  </Button>
+                                  {proj.imagem && (
+                                    <span className="text-[10px] text-muted-foreground truncate max-w-xs">
+                                      {proj.imagem.split("/").pop()}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[10px] text-muted-foreground">
+                                  Formatos suportados: PNG, JPG ou WEBP de até 5MB. A imagem será
+                                  salva no Supabase Storage.
+                                </p>
+                              </div>
+                            </div>
                           </div>
                           <div className="space-y-2 sm:col-span-3">
                             <Label className="text-xs font-semibold text-muted-foreground block">
@@ -1866,16 +2028,76 @@ function AdminPage() {
                           </div>
                           <div className="space-y-2 sm:col-span-3">
                             <Label className="text-xs font-semibold text-muted-foreground block">
-                              Caminho/URL da Imagem de Capa
+                              Imagem de Capa (Upload)
                             </Label>
-                            <Input
-                              value={post.imagem}
-                              onChange={(e) => {
-                                const copy = [...localPosts];
-                                copy[index].imagem = e.target.value;
-                                setLocalPosts(copy);
-                              }}
-                            />
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center border p-3 rounded-lg bg-background">
+                              {post.imagem ? (
+                                <div className="relative group size-16 rounded-lg overflow-hidden border border-border bg-secondary shrink-0">
+                                  <img
+                                    src={post.imagem}
+                                    alt="Preview"
+                                    className="w-full h-full object-cover"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const copy = [...localPosts];
+                                      copy[index].imagem = "";
+                                      setLocalPosts(copy);
+                                    }}
+                                    className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-[10px] font-medium cursor-pointer"
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="size-16 rounded-lg border border-dashed border-border bg-secondary flex items-center justify-center text-muted-foreground shrink-0">
+                                  <Upload className="size-4" />
+                                </div>
+                              )}
+                              <div className="flex-1 space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    id={`upload-post-${index}`}
+                                    className="hidden"
+                                    onChange={(e) => handleUploadPostImagem(e, index)}
+                                    disabled={uploadingPostIndex === index}
+                                  />
+                                  <Button
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                    className="rounded-full cursor-pointer h-8 text-xs"
+                                    disabled={uploadingPostIndex === index}
+                                  >
+                                    <label
+                                      htmlFor={`upload-post-${index}`}
+                                      className="flex items-center gap-1.5 cursor-pointer"
+                                    >
+                                      {uploadingPostIndex === index ? (
+                                        <Loader2 className="size-3.5 animate-spin" />
+                                      ) : (
+                                        <Upload className="size-3.5" />
+                                      )}
+                                      {uploadingPostIndex === index
+                                        ? "Enviando..."
+                                        : "Escolher Imagem"}
+                                    </label>
+                                  </Button>
+                                  {post.imagem && (
+                                    <span className="text-[10px] text-muted-foreground truncate max-w-xs">
+                                      {post.imagem.split("/").pop()}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[10px] text-muted-foreground">
+                                  Formatos suportados: PNG, JPG ou WEBP de até 5MB. A imagem será
+                                  salva no Supabase Storage.
+                                </p>
+                              </div>
+                            </div>
                           </div>
 
                           {/* Post Content Blocks Editor */}
