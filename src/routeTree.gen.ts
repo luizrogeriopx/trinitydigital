@@ -14,6 +14,7 @@ import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as OrcamentoRouteImport } from './routes/orcamento'
 import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -44,6 +45,11 @@ const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/blog/$slug'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/blog/$slug'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/blog/$slug'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   OrcamentoRoute: typeof OrcamentoRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
   PortfolioRoute: typeof PortfolioRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrcamentoRoute: OrcamentoRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
   PortfolioRoute: PortfolioRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
   BlogSlugRoute: BlogSlugRoute,
