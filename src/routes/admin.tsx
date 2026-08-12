@@ -374,7 +374,7 @@ function AdminPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[color-mix(in_oklab,var(--color-secondary)_25%,var(--color-background))] pt-28 pb-16">
+    <div className="min-h-screen bg-[color-mix(in_oklab,var(--color-secondary)_25%,var(--color-background))] pt-10 pb-16">
       <div className="container-site">
         {/* Header Dashboard */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-border pb-6">

@@ -173,7 +173,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[image:var(--gradient-soft)] px-4 pt-28 pb-12">
+    <div className="flex min-h-screen items-center justify-center bg-[image:var(--gradient-soft)] px-4 py-12">
       <div className="w-full max-w-md surface-card p-6 md:p-8 animate-fade-up">
         <div className="flex flex-col items-center text-center">
           <span className="grid size-12 place-items-center rounded-2xl bg-brand-soft text-brand">
