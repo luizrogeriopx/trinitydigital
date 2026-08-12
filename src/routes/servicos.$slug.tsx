@@ -70,7 +70,7 @@ function ServicoDetalhe() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="rounded-full px-7">
                 <Link to="/orcamento">
-                  Solicitar Orçamento <ArrowRight className="size-4" />
+                  Quero transformar meu negócio <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="rounded-full px-7">

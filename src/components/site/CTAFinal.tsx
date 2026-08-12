@@ -32,7 +32,7 @@ export function CTAFinal({ mensagem }: { mensagem?: string }) {
               </Button>
               <Button asChild size="lg" className="rounded-full px-7">
                 <Link to="/orcamento">
-                  Solicitar Orçamento <ArrowRight className="size-4" />
+                  Quero transformar meu negócio <ArrowRight className="size-4" />
                 </Link>
               </Button>
             </div>

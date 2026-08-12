@@ -33,11 +33,11 @@ export function Hero() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg" className="rounded-full px-7 text-base">
               <Link to="/orcamento">
-                Solicitar Orçamento <ArrowRight className="size-4" />
+                Quero transformar meu negócio <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full px-7 text-base">
-              <Link to="/servicos">Conhecer Serviços</Link>
+              <Link to="/servicos">Conhecer nossas soluções</Link>
             </Button>
           </div>
 

@@ -201,7 +201,7 @@ function Index() {
         <div className="mx-auto mt-10 max-w-xl text-center">
           <Button asChild size="lg" className="rounded-full px-8">
             <Link to="/orcamento">
-              Solicitar orçamento personalizado <ArrowRight className="size-4" />
+              Quero transformar meu negócio <ArrowRight className="size-4" />
             </Link>
           </Button>
         </div>

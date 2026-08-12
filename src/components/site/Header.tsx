@@ -52,7 +52,7 @@ export function Header() {
 
         <div className="hidden lg:block">
           <Button asChild size="lg" className="rounded-full px-6">
-            <Link to="/orcamento">Solicitar Orçamento</Link>
+            <Link to="/orcamento">Quero transformar meu negócio</Link>
           </Button>
         </div>
 
@@ -83,7 +83,7 @@ export function Header() {
             ))}
             <Button asChild size="lg" className="mt-3 rounded-full">
               <Link to="/orcamento" onClick={() => setAberto(false)}>
-                Solicitar Orçamento
+                Quero transformar meu negócio
               </Link>
             </Button>
           </nav>
