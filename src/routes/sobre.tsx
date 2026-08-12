@@ -3,7 +3,7 @@ import { Section, SectionHeading } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CTAFinal } from "@/components/site/CTAFinal";
 import { Icon } from "@/components/site/Icon";
-import { diferenciais, indicadores, processo } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Sobre a Trinity Digital | Agência de Desenvolvimento Web";
 const descricao =
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/sobre")({
 });
 
 function SobrePage() {
+  const { indicadores, processo, diferenciais } = useSiteData();
   return (
     <>
       <Section className="pt-32 md:pt-40">

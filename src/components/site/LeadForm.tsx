@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { opcoesOrcamento, servicos } from "@/data/site";
+import { opcoesOrcamento } from "@/data/site";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function LeadForm({
   origem,
@@ -15,6 +16,7 @@ export function LeadForm({
   origem: string;
   servicoPadrao?: string;
 }) {
+  const { servicos } = useSiteData();
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
 

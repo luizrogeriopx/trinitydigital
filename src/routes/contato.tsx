@@ -3,7 +3,7 @@ import { Facebook, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react
 import { Section, SectionHeading } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { LeadForm } from "@/components/site/LeadForm";
-import { site, whatsappLink } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Contato | Trinity Digital";
 const descricao =
@@ -24,6 +24,13 @@ export const Route = createFileRoute("/contato")({
 });
 
 function ContatoPage() {
+  const { site } = useSiteData();
+
+  const whatsappLink = (msg?: string) => {
+    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  };
+
   return (
     <Section className="pt-32 md:pt-40">
       <Breadcrumbs items={[{ label: "Contato" }]} />

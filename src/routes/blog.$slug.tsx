@@ -3,37 +3,51 @@ import { Section } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CTAFinal } from "@/components/site/CTAFinal";
 import { posts } from "@/data/site";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = posts.find((p) => p.slug === params.slug);
+  loader: async ({ params }) => {
+    let dbPosts = null;
+    try {
+      const { data } = await supabase.from("site_content").select("*").eq("key", "posts");
+      if (data && data.length > 0) {
+        dbPosts = data[0].value as any[];
+      }
+    } catch (e) {
+      console.error("Failed to load posts in dynamic route loader:", e);
+    }
+
+    const list = dbPosts || posts;
+    const post = list.find((p) => p.slug === params.slug);
     if (!post) throw notFound();
-    return post;
+
+    return { post, allPosts: list };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) {
+    if (!loaderData || !loaderData.post) {
       return { meta: [{ title: "Artigo não encontrado" }, { name: "robots", content: "noindex" }] };
     }
+    const { post } = loaderData;
     return {
       meta: [
-        { title: `${loaderData.titulo} | Blog Trinity Digital` },
-        { name: "description", content: loaderData.resumo },
-        { property: "og:title", content: loaderData.titulo },
-        { property: "og:description", content: loaderData.resumo },
+        { title: `${post.titulo} | Blog Trinity Digital` },
+        { name: "description", content: post.resumo },
+        { property: "og:title", content: post.titulo },
+        { property: "og:description", content: post.resumo },
         { property: "og:type", content: "article" },
-        { property: "article:published_time", content: loaderData.data },
+        { property: "article:published_time", content: post.data },
       ],
-      links: [{ rel: "canonical", href: `/blog/${loaderData.slug}` }],
+      links: [{ rel: "canonical", href: `/blog/${post.slug}` }],
       scripts: [
         {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            headline: loaderData.titulo,
-            description: loaderData.resumo,
-            datePublished: loaderData.data,
-            author: { "@type": "Organization", name: loaderData.autor },
+            headline: post.titulo,
+            description: post.resumo,
+            datePublished: post.data,
+            author: { "@type": "Organization", name: post.autor },
             publisher: { "@type": "Organization", name: "Trinity Digital" },
           }),
         },
@@ -44,8 +58,8 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function PostPage() {
-  const post = Route.useLoaderData();
-  const relacionados = posts.filter((p) => p.slug !== post.slug).slice(0, 2);
+  const { post, allPosts } = Route.useLoaderData();
+  const relacionados = allPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
   const url = `https://trinitydigital.com.br/blog/${post.slug}`;
 
   return (
@@ -56,7 +70,7 @@ function PostPage() {
           <span className="mt-6 block text-xs font-semibold tracking-widest text-brand uppercase">
             {post.categoria}
           </span>
-          <h1 className="mt-3 text-3xl font-bold text-balance md:text-4xl">{post.titulo}</h1>
+          <h1 className="mt-3 text-3xl font-bold text-balance md:text-5xl">{post.titulo}</h1>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
           <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
             <span>{post.autor}</span>

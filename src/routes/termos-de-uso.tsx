@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
-import { site } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Termos de Uso | Trinity Digital";
 const descricao = "Condições de uso do site da Trinity Digital, direitos de propriedade intelectual e responsabilidades.";
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/termos-de-uso")({
 });
 
 function Termos() {
+  const { site } = useSiteData();
   return (
     <Section className="pt-32 md:pt-40">
       <div className="mx-auto max-w-3xl">

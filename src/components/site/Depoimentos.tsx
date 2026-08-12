@@ -1,7 +1,8 @@
 import { Star } from "lucide-react";
-import { depoimentos } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function Depoimentos() {
+  const { depoimentos } = useSiteData();
   return (
     <div className="mt-14 grid gap-6 md:grid-cols-2">
       {depoimentos.map((d) => (

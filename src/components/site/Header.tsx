@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { navegacao, site } from "@/data/site";
+import { navegacao } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function Header() {
+  const { site } = useSiteData();
   const [aberto, setAberto] = useState(false);
   const [comScroll, setComScroll] = useState(false);
 

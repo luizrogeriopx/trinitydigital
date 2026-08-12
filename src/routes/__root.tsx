@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteDataProvider } from "@/context/SiteDataContext";
+import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
   return (
@@ -76,6 +78,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async () => {
+    try {
+      const { data } = await supabase.from("site_content").select("*");
+      return { dbData: data ?? [] };
+    } catch (e) {
+      console.error("Failed to load site content in root loader:", e);
+      return { dbData: [] };
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -127,17 +138,20 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  const { dbData } = Route.useLoaderData();
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <main id="conteudo">
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </main>
-      <Footer />
-      <Toaster position="top-center" richColors />
+      <SiteDataProvider initialDbData={dbData}>
+        <Header />
+        <main id="conteudo">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <Footer />
+        <Toaster position="top-center" richColors />
+      </SiteDataProvider>
     </QueryClientProvider>
   );
 }

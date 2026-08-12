@@ -10,6 +10,7 @@ import { Depoimentos } from "@/components/site/Depoimentos";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { CTAFinal } from "@/components/site/CTAFinal";
 import { diferenciais, processo, resultados, servicos, site } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Trinity Digital | Agência de Criação de Sites e Marketing Digital";
 const descricao =
@@ -55,6 +56,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { site, servicos, diferenciais, processo, resultados } = useSiteData();
+
   return (
     <>
       <Hero />

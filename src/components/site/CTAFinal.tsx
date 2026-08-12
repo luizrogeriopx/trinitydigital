@@ -1,9 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { whatsappLink } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function CTAFinal({ mensagem }: { mensagem?: string }) {
+  const { site } = useSiteData();
+
+  const whatsappLink = (msg?: string) => {
+    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  };
   return (
     <section className="py-20 md:py-24">
       <div className="container-site">

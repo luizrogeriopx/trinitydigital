@@ -4,9 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { faqs } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function FaqAccordion({ limite }: { limite?: number }) {
+  const { faqs } = useSiteData();
   const lista = faqs.slice(0, limite ?? faqs.length);
   return (
     <Accordion type="single" collapsible className="mx-auto mt-12 w-full max-w-3xl">

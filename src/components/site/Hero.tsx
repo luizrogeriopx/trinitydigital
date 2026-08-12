@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { indicadores } from "@/data/site";
 import heroImage from "@/assets/hero-dashboard.jpg";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function Hero() {
+  const { site, indicadores } = useSiteData();
   return (
     <section className="relative overflow-hidden bg-[image:var(--gradient-soft)] pt-32 pb-20 md:pt-40 md:pb-28">
       <div
@@ -22,12 +23,10 @@ export function Hero() {
             Agência de desenvolvimento web e marketing digital
           </span>
           <h1 className="mt-6 text-4xl leading-[1.08] font-bold text-balance md:text-5xl lg:text-6xl">
-            Transformamos ideias em <span className="text-gradient-brand">soluções digitais</span> que
-            fazem seu negócio crescer.
+            {site.slogan || "Transformamos ideias em soluções digitais que fazem seu negócio crescer."}
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Sites, lojas virtuais, sistemas, CRM, SEO e campanhas digitais desenvolvidos para gerar
-            presença, autoridade e resultados.
+            {site.descricao}
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">

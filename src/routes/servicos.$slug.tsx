@@ -6,35 +6,50 @@ import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { Icon } from "@/components/site/Icon";
 import { CTAFinal } from "@/components/site/CTAFinal";
 import { LeadForm } from "@/components/site/LeadForm";
-import { servicos, whatsappLink } from "@/data/site";
+import { servicos } from "@/data/site";
+import { supabase } from "@/integrations/supabase/client";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export const Route = createFileRoute("/servicos/$slug")({
-  loader: ({ params }) => {
-    const servico = servicos.find((s) => s.slug === params.slug);
+  loader: async ({ params }) => {
+    let dbServicos = null;
+    try {
+      const { data } = await supabase.from("site_content").select("*").eq("key", "servicos");
+      if (data && data.length > 0) {
+        dbServicos = data[0].value as any[];
+      }
+    } catch (e) {
+      console.error("Failed to load services in dynamic route loader:", e);
+    }
+
+    const list = dbServicos || servicos;
+    const servico = list.find((s) => s.slug === params.slug);
     if (!servico) throw notFound();
-    return servico;
+
+    return { servico, allServicos: list };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) {
+    if (!loaderData || !loaderData.servico) {
       return { meta: [{ title: "Serviço não encontrado" }, { name: "robots", content: "noindex" }] };
     }
+    const { servico } = loaderData;
     return {
       meta: [
-        { title: loaderData.titleSeo },
-        { name: "description", content: loaderData.descricaoSeo },
-        { property: "og:title", content: loaderData.titleSeo },
-        { property: "og:description", content: loaderData.descricaoSeo },
+        { title: servico.titleSeo },
+        { name: "description", content: servico.descricaoSeo },
+        { property: "og:title", content: servico.titleSeo },
+        { property: "og:description", content: servico.descricaoSeo },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: `/servicos/${loaderData.slug}` }],
+      links: [{ rel: "canonical", href: `/servicos/${servico.slug}` }],
       scripts: [
         {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            name: loaderData.nome,
-            description: loaderData.descricaoSeo,
+            name: servico.nome,
+            description: servico.descricaoSeo,
             provider: { "@type": "Organization", name: "Trinity Digital" },
             areaServed: "BR",
           }),
@@ -46,8 +61,14 @@ export const Route = createFileRoute("/servicos/$slug")({
 });
 
 function ServicoDetalhe() {
-  const servico = Route.useLoaderData();
-  const outros = servicos.filter((s) => s.slug !== servico.slug).slice(0, 4);
+  const { servico, allServicos } = Route.useLoaderData();
+  const { site } = useSiteData();
+  const outros = allServicos.filter((s) => s.slug !== servico.slug).slice(0, 4);
+
+  const whatsappLink = (msg?: string) => {
+    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  };
 
   return (
     <>

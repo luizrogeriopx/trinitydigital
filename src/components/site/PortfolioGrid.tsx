@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { categoriasPortfolio, projetos, whatsappLink } from "@/data/site";
+import { categoriasPortfolio } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function PortfolioGrid({ limite }: { limite?: number }) {
+  const { site, projetos } = useSiteData();
   const [filtro, setFiltro] = useState<string>("Todos");
+
+  const whatsappLink = (msg?: string) => {
+    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  };
+
   const lista = projetos
     .filter((p) => filtro === "Todos" || p.categoria === filtro)
     .slice(0, limite ?? projetos.length);

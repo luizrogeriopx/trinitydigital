@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
-import { site } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Política de Privacidade | Trinity Digital";
 const descricao = "Saiba como a Trinity Digital coleta, utiliza e protege os dados pessoais enviados pelo site.";
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/politica-de-privacidade")({
 });
 
 function Politica() {
+  const { site } = useSiteData();
   return (
     <Section className="pt-32 md:pt-40">
       <div className="mx-auto max-w-3xl">

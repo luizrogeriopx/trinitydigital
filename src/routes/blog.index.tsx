@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CTAFinal } from "@/components/site/CTAFinal";
-import { posts } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Blog de Marketing Digital e Criação de Sites | Trinity Digital";
 const descricao =
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogPage() {
+  const { posts } = useSiteData();
   return (
     <>
       <Section className="pt-32 md:pt-40">

@@ -3,7 +3,7 @@ import { Section, SectionHeading } from "@/components/site/Section";
 import { ServicoCard } from "@/components/site/ServicoCard";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CTAFinal } from "@/components/site/CTAFinal";
-import { servicos } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 const titulo = "Serviços de Criação de Sites, SEO e Marketing Digital | Trinity Digital";
 const descricao =
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/servicos/")({
 });
 
 function ServicosPage() {
+  const { servicos } = useSiteData();
   return (
     <>
       <Section className="pt-32 md:pt-40">

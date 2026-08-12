@@ -1,9 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Linkedin, Mail, MessageCircle, Zap } from "lucide-react";
-import { servicos, site, whatsappLink } from "@/data/site";
+import { useSiteData } from "@/context/SiteDataContext";
 
 export function Footer() {
+  const { site, servicos } = useSiteData();
   const ano = new Date().getFullYear();
+
+  const whatsappLink = (msg?: string) => {
+    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  };
 
   return (
     <footer className="bg-navy text-navy-foreground">
@@ -94,6 +100,9 @@ export function Footer() {
             </Link>
             <Link to="/termos-de-uso" className="hover:text-navy-foreground">
               Termos de Uso
+            </Link>
+            <Link to="/admin" className="hover:text-navy-foreground">
+              Painel Admin
             </Link>
           </div>
         </div>
