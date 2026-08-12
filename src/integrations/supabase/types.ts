@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          created_at: string
+          email: string | null
+          empresa: string | null
+          id: string
+          mensagem: string | null
+          nome: string
+          orcamento: string | null
+          origem: string | null
+          servico: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+          whatsapp: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          empresa?: string | null
+          id?: string
+          mensagem?: string | null
+          nome: string
+          orcamento?: string | null
+          origem?: string | null
+          servico?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          whatsapp: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          empresa?: string | null
+          id?: string
+          mensagem?: string | null
+          nome?: string
+          orcamento?: string | null
+          origem?: string | null
+          servico?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +67,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lead_status:
+        | "novo"
+        | "contato_realizado"
+        | "proposta_enviada"
+        | "negociacao"
+        | "fechado"
+        | "perdido"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +200,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lead_status: [
+        "novo",
+        "contato_realizado",
+        "proposta_enviada",
+        "negociacao",
+        "fechado",
+        "perdido",
+      ],
+    },
   },
 } as const
