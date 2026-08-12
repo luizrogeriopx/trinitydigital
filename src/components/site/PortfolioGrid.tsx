@@ -51,19 +51,26 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
             className="surface-card surface-card-hover group overflow-hidden"
           >
             <div className="relative aspect-16/10 overflow-hidden bg-[image:var(--gradient-navy)]">
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-8 top-10 bottom-0 rounded-t-xl border border-white/15 bg-white/10 backdrop-blur-sm transition-transform duration-500 group-hover:-translate-y-2"
-              >
-                <div className="flex gap-1.5 border-b border-white/10 px-3 py-2">
+              <div className="absolute inset-x-8 top-10 bottom-0 rounded-t-xl border border-white/15 bg-white/10 backdrop-blur-sm transition-transform duration-500 group-hover:-translate-y-2 flex flex-col">
+                <div className="flex gap-1.5 border-b border-white/10 px-3 py-2 shrink-0">
                   <span className="size-2 rounded-full bg-white/40" />
                   <span className="size-2 rounded-full bg-white/25" />
                   <span className="size-2 rounded-full bg-white/25" />
                 </div>
-                <div className="space-y-2 p-3">
-                  <span className="block h-2 w-2/3 rounded bg-white/30" />
-                  <span className="block h-2 w-1/2 rounded bg-white/20" />
-                  <span className="block h-14 rounded bg-white/10" />
+                <div className="flex-1 overflow-hidden relative">
+                  {projeto.imagem ? (
+                    <img
+                      src={projeto.imagem}
+                      alt={`Screenshot do projeto ${projeto.nome}`}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  ) : (
+                    <div className="space-y-2 p-3">
+                      <span className="block h-2 w-2/3 rounded bg-white/30" />
+                      <span className="block h-2 w-1/2 rounded bg-white/20" />
+                      <span className="block h-14 rounded bg-white/10" />
+                    </div>
+                  )}
                 </div>
               </div>
               <span className="absolute top-3 left-3 rounded-full bg-background/90 px-3 py-1 text-xs font-semibold text-foreground">
