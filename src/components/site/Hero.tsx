@@ -19,11 +19,12 @@ export function Hero() {
 
       <div className="container-site relative grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
         <div className="animate-fade-up">
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-soft px-3.5 py-1.5 text-xs font-semibold tracking-wide text-accent-foreground uppercase">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-soft px-3.5 py-1.5 text-xs font-semibold tracking-wide text-accent-foreground uppercase max-sm:text-[10px] max-sm:px-2.5 max-sm:leading-snug text-center">
             Agência de desenvolvimento web e marketing digital
           </span>
           <h1 className="mt-6 text-4xl leading-[1.08] font-bold text-balance md:text-5xl lg:text-6xl">
-            {site.slogan || "Transformamos ideias em soluções digitais que fazem seu negócio crescer."}
+            {site.slogan ||
+              "Transformamos ideias em soluções digitais que fazem seu negócio crescer."}
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
             {site.descricao}
@@ -64,7 +65,7 @@ export function Hero() {
       <div className="container-site relative mt-16">
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
           {indicadores.map((item) => (
-            <div key={item.label} className="bg-background px-6 py-8 text-center">
+            <div key={item.label} className="bg-background px-4 py-6 sm:px-6 sm:py-8 text-center">
               <dt className="sr-only">{item.label}</dt>
               <dd>
                 <span className="block font-display text-3xl font-bold text-brand md:text-4xl">

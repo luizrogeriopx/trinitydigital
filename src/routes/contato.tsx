@@ -27,7 +27,8 @@ function ContatoPage() {
   const { site } = useSiteData();
 
   const whatsappLink = (msg?: string) => {
-    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    const text =
+      msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
     return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   };
 
@@ -45,15 +46,27 @@ function ContatoPage() {
       </div>
       <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1fr_1.1fr]">
         <div className="space-y-4">
-          <a href={whatsappLink()} target="_blank" rel="noreferrer" className="surface-card surface-card-hover flex items-center gap-4 p-6">
-            <span className="grid size-11 place-items-center rounded-xl bg-brand-soft text-brand"><MessageCircle className="size-5" /></span>
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noreferrer"
+            className="surface-card surface-card-hover flex items-center gap-4 p-6"
+          >
+            <span className="grid size-11 place-items-center rounded-xl bg-brand-soft text-brand">
+              <MessageCircle className="size-5" />
+            </span>
             <span>
               <span className="block text-sm text-muted-foreground">WhatsApp</span>
               <span className="block font-semibold">{site.whatsappExibicao}</span>
             </span>
           </a>
-          <a href={`mailto:${site.email}`} className="surface-card surface-card-hover flex items-center gap-4 p-6">
-            <span className="grid size-11 place-items-center rounded-xl bg-brand-soft text-brand"><Mail className="size-5" /></span>
+          <a
+            href={`mailto:${site.email}`}
+            className="surface-card surface-card-hover flex items-center gap-4 p-6"
+          >
+            <span className="grid size-11 place-items-center rounded-xl bg-brand-soft text-brand">
+              <Mail className="size-5" />
+            </span>
             <span>
               <span className="block text-sm text-muted-foreground">E-mail</span>
               <span className="block font-semibold">{site.email}</span>
@@ -62,9 +75,33 @@ function ContatoPage() {
           <div className="surface-card p-6">
             <span className="block text-sm text-muted-foreground">Redes sociais</span>
             <div className="mt-3 flex gap-3">
-              <a href={site.redes.instagram} aria-label="Instagram" target="_blank" rel="noreferrer" className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"><Instagram className="size-4" /></a>
-              <a href={site.redes.facebook} aria-label="Facebook" target="_blank" rel="noreferrer" className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"><Facebook className="size-4" /></a>
-              <a href={site.redes.linkedin} aria-label="LinkedIn" target="_blank" rel="noreferrer" className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"><Linkedin className="size-4" /></a>
+              <a
+                href={site.redes.instagram}
+                aria-label="Instagram"
+                target="_blank"
+                rel="noreferrer"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"
+              >
+                <Instagram className="size-4" />
+              </a>
+              <a
+                href={site.redes.facebook}
+                aria-label="Facebook"
+                target="_blank"
+                rel="noreferrer"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"
+              >
+                <Facebook className="size-4" />
+              </a>
+              <a
+                href={site.redes.linkedin}
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="noreferrer"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:bg-secondary"
+              >
+                <Linkedin className="size-4" />
+              </a>
             </div>
           </div>
         </div>

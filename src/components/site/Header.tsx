@@ -28,7 +28,11 @@ export function Header() {
       )}
     >
       <div className="container-site flex h-18 items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-center gap-2.5" aria-label={`${site.nome} — página inicial`}>
+        <Link
+          to="/"
+          className="flex items-center gap-2.5"
+          aria-label={`${site.nome} — página inicial`}
+        >
           <span className="grid size-9 place-items-center rounded-xl bg-[image:var(--gradient-brand)] text-primary-foreground shadow-[var(--shadow-lift)]">
             <Zap className="size-5" aria-hidden="true" />
           </span>

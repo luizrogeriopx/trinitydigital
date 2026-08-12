@@ -7,7 +7,8 @@ export function Footer() {
   const ano = new Date().getFullYear();
 
   const whatsappLink = (msg?: string) => {
-    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    const text =
+      msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
     return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   };
 
@@ -23,13 +24,31 @@ export function Footer() {
           </div>
           <p className="mt-4 text-sm leading-relaxed text-navy-foreground/70">{site.descricao}</p>
           <div className="mt-5 flex gap-3">
-            <a href={site.redes.instagram} aria-label="Instagram" className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10" target="_blank" rel="noreferrer">
+            <a
+              href={site.redes.instagram}
+              aria-label="Instagram"
+              className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Instagram className="size-4" />
             </a>
-            <a href={site.redes.facebook} aria-label="Facebook" className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10" target="_blank" rel="noreferrer">
+            <a
+              href={site.redes.facebook}
+              aria-label="Facebook"
+              className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Facebook className="size-4" />
             </a>
-            <a href={site.redes.linkedin} aria-label="LinkedIn" className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10" target="_blank" rel="noreferrer">
+            <a
+              href={site.redes.linkedin}
+              aria-label="LinkedIn"
+              className="grid size-10 place-items-center rounded-lg border border-navy-foreground/15 transition-colors hover:bg-navy-foreground/10"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Linkedin className="size-4" />
             </a>
           </div>
@@ -61,7 +80,11 @@ export function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm text-navy-foreground/70">
             {servicos.map((s) => (
               <li key={s.slug}>
-                <Link to="/servicos/$slug" params={{ slug: s.slug }} className="transition-colors hover:text-navy-foreground">
+                <Link
+                  to="/servicos/$slug"
+                  params={{ slug: s.slug }}
+                  className="transition-colors hover:text-navy-foreground"
+                >
                   {s.nome}
                 </Link>
               </li>
@@ -73,12 +96,20 @@ export function Footer() {
           <h2 className="text-sm font-semibold tracking-widest uppercase">Contato</h2>
           <ul className="mt-4 space-y-3 text-sm text-navy-foreground/70">
             <li>
-              <a href={whatsappLink()} target="_blank" rel="noreferrer" className="flex items-center gap-2 transition-colors hover:text-navy-foreground">
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 transition-colors hover:text-navy-foreground"
+              >
                 <MessageCircle className="size-4" /> {site.whatsappExibicao}
               </a>
             </li>
             <li>
-              <a href={`mailto:${site.email}`} className="flex items-center gap-2 transition-colors hover:text-navy-foreground">
+              <a
+                href={`mailto:${site.email}`}
+                className="flex items-center gap-2 transition-colors hover:text-navy-foreground"
+              >
                 <Mail className="size-4" /> {site.email}
               </a>
             </li>

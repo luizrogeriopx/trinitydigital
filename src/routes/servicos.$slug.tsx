@@ -30,7 +30,9 @@ export const Route = createFileRoute("/servicos/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData || !loaderData.servico) {
-      return { meta: [{ title: "Serviço não encontrado" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Serviço não encontrado" }, { name: "robots", content: "noindex" }],
+      };
     }
     const { servico } = loaderData;
     return {
@@ -66,7 +68,8 @@ function ServicoDetalhe() {
   const outros = allServicos.filter((s) => s.slug !== servico.slug).slice(0, 4);
 
   const whatsappLink = (msg?: string) => {
-    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    const text =
+      msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
     return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   };
 
@@ -107,7 +110,10 @@ function ServicoDetalhe() {
       </Section>
 
       <Section tone="muted">
-        <SectionHeading eyebrow="O que está incluso" title={`O que entregamos em ${servico.nome}`} />
+        <SectionHeading
+          eyebrow="O que está incluso"
+          title={`O que entregamos em ${servico.nome}`}
+        />
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {servico.entregas.map((e) => (
             <div key={e.titulo} className="surface-card surface-card-hover p-6">
@@ -122,7 +128,10 @@ function ServicoDetalhe() {
         <SectionHeading eyebrow="Para quem é" title="Indicado para" />
         <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-3">
           {servico.paraQuem.map((p) => (
-            <li key={p} className="rounded-full border border-border bg-secondary px-4 py-2 text-sm font-medium">
+            <li
+              key={p}
+              className="rounded-full border border-border bg-secondary px-4 py-2 text-sm font-medium"
+            >
               {p}
             </li>
           ))}

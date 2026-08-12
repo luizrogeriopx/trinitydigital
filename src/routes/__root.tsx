@@ -143,7 +143,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
 
-  const isAdminRoute = location.pathname.startsWith("/admin") || location.pathname.startsWith("/login");
+  const isAdminRoute =
+    location.pathname.startsWith("/admin") || location.pathname.startsWith("/login");
 
   return (
     <QueryClientProvider client={queryClient}>

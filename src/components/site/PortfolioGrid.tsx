@@ -9,7 +9,8 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
   const [filtro, setFiltro] = useState<string>("Todos");
 
   const whatsappLink = (msg?: string) => {
-    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    const text =
+      msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
     return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   };
 
@@ -19,7 +20,11 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Filtrar projetos">
+      <div
+        className="flex flex-wrap justify-center gap-2"
+        role="tablist"
+        aria-label="Filtrar projetos"
+      >
         {categoriasPortfolio.map((cat) => (
           <button
             key={cat}
@@ -41,7 +46,10 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {lista.map((projeto) => (
-          <article key={projeto.slug} className="surface-card surface-card-hover group overflow-hidden">
+          <article
+            key={projeto.slug}
+            className="surface-card surface-card-hover group overflow-hidden"
+          >
             <div className="relative aspect-16/10 overflow-hidden bg-[image:var(--gradient-navy)]">
               <div
                 aria-hidden="true"
@@ -65,7 +73,9 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
 
             <div className="p-6">
               <h3 className="text-lg font-semibold">{projeto.nome}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{projeto.descricao}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {projeto.descricao}
+              </p>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {projeto.tecnologias.map((tec) => (
                   <li
@@ -77,7 +87,12 @@ export function PortfolioGrid({ limite }: { limite?: number }) {
                 ))}
               </ul>
               <a
-                href={projeto.link ?? whatsappLink(`Olá! Vi o projeto ${projeto.nome} no site e gostaria de saber mais.`)}
+                href={
+                  projeto.link ??
+                  whatsappLink(
+                    `Olá! Vi o projeto ${projeto.nome} no site e gostaria de saber mais.`,
+                  )
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand"

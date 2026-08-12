@@ -40,12 +40,21 @@ function BlogPage() {
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
-            <article key={post.slug} className="surface-card surface-card-hover flex h-full flex-col p-6">
-              <span className="text-xs font-semibold tracking-widest text-brand uppercase">{post.categoria}</span>
+            <article
+              key={post.slug}
+              className="surface-card surface-card-hover flex h-full flex-col p-6"
+            >
+              <span className="text-xs font-semibold tracking-widest text-brand uppercase">
+                {post.categoria}
+              </span>
               <h2 className="mt-3 text-xl font-semibold">
-                <Link to="/blog/$slug" params={{ slug: post.slug }}>{post.titulo}</Link>
+                <Link to="/blog/$slug" params={{ slug: post.slug }}>
+                  {post.titulo}
+                </Link>
               </h2>
-              <p className="mt-2.5 grow text-sm leading-relaxed text-muted-foreground">{post.resumo}</p>
+              <p className="mt-2.5 grow text-sm leading-relaxed text-muted-foreground">
+                {post.resumo}
+              </p>
               <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
                 <time dateTime={post.data}>{new Date(post.data).toLocaleDateString("pt-BR")}</time>
                 <span>{post.leitura} de leitura</span>

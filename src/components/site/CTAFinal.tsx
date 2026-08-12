@@ -7,7 +7,8 @@ export function CTAFinal({ mensagem }: { mensagem?: string }) {
   const { site } = useSiteData();
 
   const whatsappLink = (msg?: string) => {
-    const text = msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
+    const text =
+      msg || "Olá! Vim pelo site e gostaria de solicitar um orçamento para o meu projeto digital.";
     return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   };
   return (
@@ -27,8 +28,8 @@ export function CTAFinal({ mensagem }: { mensagem?: string }) {
               Pronto para levar seu negócio para o próximo nível?
             </h2>
             <p className="mt-4 text-navy-foreground/75">
-              Conte para nós o que você precisa. Nossa equipe analisa seu projeto e apresenta a melhor
-              solução digital para o seu negócio.
+              Conte para nós o que você precisa. Nossa equipe analisa seu projeto e apresenta a
+              melhor solução digital para o seu negócio.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" variant="secondary" className="rounded-full px-7">

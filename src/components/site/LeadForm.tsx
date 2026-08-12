@@ -9,13 +9,7 @@ import { opcoesOrcamento } from "@/data/site";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteData } from "@/context/SiteDataContext";
 
-export function LeadForm({
-  origem,
-  servicoPadrao,
-}: {
-  origem: string;
-  servicoPadrao?: string;
-}) {
+export function LeadForm({ origem, servicoPadrao }: { origem: string; servicoPadrao?: string }) {
   const { servicos } = useSiteData();
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
@@ -60,19 +54,43 @@ export function LeadForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="nome">Nome *</Label>
-          <Input id="nome" name="nome" required autoComplete="name" placeholder="Seu nome completo" />
+          <Input
+            id="nome"
+            name="nome"
+            required
+            autoComplete="name"
+            placeholder="Seu nome completo"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="empresa">Empresa</Label>
-          <Input id="empresa" name="empresa" autoComplete="organization" placeholder="Nome da empresa" />
+          <Input
+            id="empresa"
+            name="empresa"
+            autoComplete="organization"
+            placeholder="Nome da empresa"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="whatsapp">WhatsApp *</Label>
-          <Input id="whatsapp" name="whatsapp" required inputMode="tel" autoComplete="tel" placeholder="(00) 00000-0000" />
+          <Input
+            id="whatsapp"
+            name="whatsapp"
+            required
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="(00) 00000-0000"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">E-mail</Label>
-          <Input id="email" name="email" type="email" autoComplete="email" placeholder="voce@empresa.com.br" />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="voce@empresa.com.br"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="servico">Serviço de interesse</Label>
@@ -108,7 +126,12 @@ export function LeadForm({
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="mensagem">Mensagem</Label>
-          <Textarea id="mensagem" name="mensagem" rows={5} placeholder="Conte um pouco sobre o seu projeto e seus objetivos." />
+          <Textarea
+            id="mensagem"
+            name="mensagem"
+            rows={5}
+            placeholder="Conte um pouco sobre o seu projeto e seus objetivos."
+          />
         </div>
       </div>
 

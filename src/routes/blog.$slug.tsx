@@ -81,33 +81,57 @@ function PostPage() {
           <div className="mt-10 space-y-5">
             {post.conteudo.map((bloco, i) =>
               bloco.tipo === "h2" ? (
-                <h2 key={i} className="pt-4 text-2xl font-bold">{bloco.texto}</h2>
+                <h2 key={i} className="pt-4 text-2xl font-bold">
+                  {bloco.texto}
+                </h2>
               ) : bloco.tipo === "ul" ? (
                 <ul key={i} className="list-disc space-y-2 pl-5 text-muted-foreground">
-                  {bloco.itens?.map((item) => <li key={item}>{item}</li>)}
+                  {bloco.itens?.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
                 </ul>
               ) : (
-                <p key={i} className="leading-relaxed text-muted-foreground">{bloco.texto}</p>
+                <p key={i} className="leading-relaxed text-muted-foreground">
+                  {bloco.texto}
+                </p>
               ),
             )}
           </div>
 
           <ul className="mt-10 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <li key={tag} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
+              <li
+                key={tag}
+                className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground"
+              >
                 #{tag}
               </li>
             ))}
           </ul>
 
           <div className="mt-8 flex flex-wrap gap-3 text-sm">
-            <a className="font-semibold text-brand" href={`https://wa.me/?text=${encodeURIComponent(post.titulo + " " + url)}`} target="_blank" rel="noreferrer">
+            <a
+              className="font-semibold text-brand"
+              href={`https://wa.me/?text=${encodeURIComponent(post.titulo + " " + url)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               Compartilhar no WhatsApp
             </a>
-            <a className="font-semibold text-brand" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`} target="_blank" rel="noreferrer">
+            <a
+              className="font-semibold text-brand"
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               Compartilhar no LinkedIn
             </a>
-            <a className="font-semibold text-brand" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`} target="_blank" rel="noreferrer">
+            <a
+              className="font-semibold text-brand"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               Compartilhar no Facebook
             </a>
           </div>
@@ -115,8 +139,15 @@ function PostPage() {
           <h2 className="mt-16 text-2xl font-bold">Posts relacionados</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {relacionados.map((p) => (
-              <Link key={p.slug} to="/blog/$slug" params={{ slug: p.slug }} className="surface-card surface-card-hover p-5">
-                <span className="text-xs font-semibold tracking-widest text-brand uppercase">{p.categoria}</span>
+              <Link
+                key={p.slug}
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                className="surface-card surface-card-hover p-5"
+              >
+                <span className="text-xs font-semibold tracking-widest text-brand uppercase">
+                  {p.categoria}
+                </span>
                 <span className="mt-2 block font-semibold">{p.titulo}</span>
               </Link>
             ))}

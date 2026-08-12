@@ -41,26 +41,28 @@ function SobrePage() {
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             <p>
-              Atendemos empresas, profissionais liberais, escolas, igrejas, lojas e negócios que precisam
-              de mais do que um site bonito: precisam de uma estrutura digital que gere contatos todos os
-              dias.
+              Atendemos empresas, profissionais liberais, escolas, igrejas, lojas e negócios que
+              precisam de mais do que um site bonito: precisam de uma estrutura digital que gere
+              contatos todos os dias.
             </p>
             <p>
               Cada projeto começa com um briefing sério, passa por planejamento de arquitetura e
-              palavras-chave, e só depois vira design e código. É assim que garantimos sites rápidos,
-              acessíveis, escaláveis e prontos para SEO e tráfego pago.
+              palavras-chave, e só depois vira design e código. É assim que garantimos sites
+              rápidos, acessíveis, escaláveis e prontos para SEO e tráfego pago.
             </p>
             <p>
-              Somos parceiros de longo prazo: acompanhamos indicadores, otimizamos páginas e ajustamos
-              campanhas para que o investimento continue rendendo depois da entrega.
+              Somos parceiros de longo prazo: acompanhamos indicadores, otimizamos páginas e
+              ajustamos campanhas para que o investimento continue rendendo depois da entrega.
             </p>
           </div>
           <dl className="grid grid-cols-2 gap-4">
             {indicadores.map((i) => (
-              <div key={i.label} className="surface-card p-6 text-center">
+              <div key={i.label} className="surface-card p-4 sm:p-6 text-center">
                 <dt className="sr-only">{i.label}</dt>
                 <dd>
-                  <span className="block font-display text-3xl font-bold text-brand">{i.valor}</span>
+                  <span className="block font-display text-3xl font-bold text-brand">
+                    {i.valor}
+                  </span>
                   <span className="mt-1 block text-sm text-muted-foreground">{i.label}</span>
                 </dd>
               </div>

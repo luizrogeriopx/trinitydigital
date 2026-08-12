@@ -73,17 +73,20 @@ function Index() {
             {
               icone: "Globe",
               titulo: "Presença digital",
-              texto: "Sites, blogs e lojas virtuais com design profissional, performance e estrutura preparada para o Google.",
+              texto:
+                "Sites, blogs e lojas virtuais com design profissional, performance e estrutura preparada para o Google.",
             },
             {
               icone: "Workflow",
               titulo: "Sistemas e processos",
-              texto: "CRM personalizado, painéis administrativos e automações que organizam sua operação comercial.",
+              texto:
+                "CRM personalizado, painéis administrativos e automações que organizam sua operação comercial.",
             },
             {
               icone: "TrendingUp",
               titulo: "Aquisição de clientes",
-              texto: "SEO, Google Ads e Meta Ads integrados ao seu funil, com rastreamento real de conversões.",
+              texto:
+                "SEO, Google Ads e Meta Ads integrados ao seu funil, com rastreamento real de conversões.",
             },
           ].map((item) => (
             <div key={item.titulo} className="surface-card surface-card-hover p-7">
