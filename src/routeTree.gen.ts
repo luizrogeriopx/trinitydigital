@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as OrcamentoRouteImport } from './routes/orcamento'
 import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
@@ -36,6 +37,11 @@ const AdminRoute = AdminRouteImport.update({
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrcamentoRoute = OrcamentoRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contato': typeof ContatoRoute
+  '/login': typeof LoginRoute
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contato': typeof ContatoRoute
+  '/login': typeof LoginRoute
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contato': typeof ContatoRoute
+  '/login': typeof LoginRoute
   '/orcamento': typeof OrcamentoRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/portfolio': typeof PortfolioRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/contato'
+    | '/login'
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/contato'
+    | '/login'
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/contato'
+    | '/login'
     | '/orcamento'
     | '/politica-de-privacidade'
     | '/portfolio'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ContatoRoute: typeof ContatoRoute
+  LoginRoute: typeof LoginRoute
   OrcamentoRoute: typeof OrcamentoRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
   PortfolioRoute: typeof PortfolioRoute
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/contato'
       fullPath: '/contato'
       preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orcamento': {
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ContatoRoute: ContatoRoute,
+  LoginRoute: LoginRoute,
   OrcamentoRoute: OrcamentoRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
   PortfolioRoute: PortfolioRoute,

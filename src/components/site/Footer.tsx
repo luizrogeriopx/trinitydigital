@@ -101,9 +101,6 @@ export function Footer() {
             <Link to="/termos-de-uso" className="hover:text-navy-foreground">
               Termos de Uso
             </Link>
-            <Link to="/admin" className="hover:text-navy-foreground">
-              Painel Admin
-            </Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteData } from "@/context/SiteDataContext";
@@ -42,6 +42,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      throw notFound();
+    }
+  },
   component: AdminPage,
 });
 
@@ -74,19 +82,10 @@ function AdminPage() {
     posts,
     updateSection,
     refreshData: refreshSiteData,
+    user,
   } = useSiteData();
 
-  // Auth State
-  const [sessionUser, setSessionUser] = useState<any>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [authTab, setAuthTab] = useState<"login" | "register">("login");
-
-  // Auth Form Fields
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [systemKey, setSystemKey] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   // Admin View State
   const [activeTab, setActiveTab] = useState<"leads" | "content">("leads");
@@ -205,37 +204,12 @@ function AdminPage() {
     setLocalPosts(posts);
   }, [posts]);
 
-  // Check current session
-  useEffect(() => {
-    async function checkSession() {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        setSessionUser(session?.user ?? null);
-      } catch (e) {
-        console.error("Auth check failed:", e);
-      } finally {
-        setAuthLoading(false);
-      }
-    }
-    checkSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSessionUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
   // Fetch leads when authenticated and tab is active
   useEffect(() => {
-    if (sessionUser && activeTab === "leads") {
+    if (user && activeTab === "leads") {
       fetchLeads();
     }
-  }, [sessionUser, activeTab]);
+  }, [user, activeTab]);
 
   const fetchLeads = async () => {
     setLeadsLoading(true);
@@ -293,55 +267,10 @@ function AdminPage() {
     }
   };
 
-  // Auth Operations
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      toast.error("Preencha e-mail e senha.");
-      return;
-    }
-    setAuthLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setAuthLoading(false);
-    if (error) {
-      toast.error("Falha no login: " + error.message);
-    } else {
-      toast.success("Bem-vindo de volta!");
-    }
-  };
-
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password || !fullName || !systemKey) {
-      toast.error("Todos os campos são obrigatórios.");
-      return;
-    }
-    if (systemKey.trim() !== "trinityadmin") {
-      toast.error("Código de Segurança do Sistema inválido!");
-      return;
-    }
-    setAuthLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-        },
-      },
-    });
-    setAuthLoading(false);
-    if (error) {
-      toast.error("Erro ao registrar: " + error.message);
-    } else {
-      toast.success("Conta criada! Verifique seu e-mail caso necessário ou faça login.");
-      setAuthTab("login");
-    }
-  };
-
   const handleLogout = async () => {
     await supabase.auth.signOut();
     toast.success("Sessão encerrada!");
+    navigate({ to: "/login" });
   };
 
   // Content Save Handlers
@@ -439,174 +368,6 @@ function AdminPage() {
     perdido: "bg-red-100 text-red-800 border-red-200",
   };
 
-  // Render Login Screen if not authenticated
-  if (authLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[image:var(--gradient-soft)] pt-20">
-        <div className="flex flex-col items-center gap-2">
-          <RefreshCw className="size-8 animate-spin text-brand" />
-          <span className="text-sm text-muted-foreground font-medium">
-            Carregando painel administrativo...
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  if (!sessionUser) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[image:var(--gradient-soft)] px-4 pt-28 pb-12">
-        <div className="w-full max-w-md surface-card p-6 md:p-8 animate-fade-up">
-          <div className="flex flex-col items-center text-center">
-            <span className="grid size-12 place-items-center rounded-2xl bg-brand-soft text-brand">
-              <Shield className="size-6" />
-            </span>
-            <h1 className="mt-5 text-2xl font-bold">Painel Trinity Digital</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Acesso exclusivo para administradores da agência
-            </p>
-          </div>
-
-          {/* Auth Tab Buttons */}
-          <div className="mt-8 flex rounded-lg bg-secondary p-1">
-            <button
-              onClick={() => setAuthTab("login")}
-              className={`flex-1 rounded-md py-2 text-xs font-semibold transition-colors ${
-                authTab === "login"
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Entrar
-            </button>
-            <button
-              onClick={() => setAuthTab("register")}
-              className={`flex-1 rounded-md py-2 text-xs font-semibold transition-colors ${
-                authTab === "register"
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Criar Conta
-            </button>
-          </div>
-
-          {authTab === "login" ? (
-            <form onSubmit={handleLogin} className="mt-6 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="auth-email">E-mail</Label>
-                <div className="relative">
-                  <Input
-                    id="auth-email"
-                    type="email"
-                    placeholder="nome@empresa.com.br"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <Mail className="absolute right-3 top-3 size-4 text-muted-foreground pointer-events-none" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="auth-pass">Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="auth-pass"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Sua senha secreta"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                  </button>
-                </div>
-              </div>
-              <Button type="submit" className="w-full mt-2 rounded-full">
-                <Lock className="size-4" /> Acessar Painel
-              </Button>
-            </form>
-          ) : (
-            <form onSubmit={handleRegister} className="mt-6 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="reg-name">Nome Completo</Label>
-                <div className="relative">
-                  <Input
-                    id="reg-name"
-                    placeholder="Seu nome"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                  />
-                  <User className="absolute right-3 top-3 size-4 text-muted-foreground pointer-events-none" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="reg-email">E-mail corporativo</Label>
-                <div className="relative">
-                  <Input
-                    id="reg-email"
-                    type="email"
-                    placeholder="nome@empresa.com.br"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <Mail className="absolute right-3 top-3 size-4 text-muted-foreground pointer-events-none" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="reg-pass">Defina uma Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="reg-pass"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Mínimo 6 caracteres"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                  </button>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="reg-key">Chave de Segurança do Sistema</Label>
-                  <span className="text-[10px] text-muted-foreground">Default: `trinityadmin`</span>
-                </div>
-                <div className="relative">
-                  <Input
-                    id="reg-key"
-                    type="password"
-                    placeholder="Chave para autorizar cadastro"
-                    value={systemKey}
-                    onChange={(e) => setSystemKey(e.target.value)}
-                    required
-                  />
-                  <Key className="absolute right-3 top-3 size-4 text-muted-foreground pointer-events-none" />
-                </div>
-              </div>
-              <Button type="submit" className="w-full mt-2 rounded-full">
-                <Check className="size-4" /> Criar minha Conta
-              </Button>
-            </form>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   // Filtered Leads
   const filteredLeads = leads.filter(
     (l) => leadFilterStatus === "Todos" || l.status === leadFilterStatus,
@@ -627,7 +388,7 @@ function AdminPage() {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground bg-secondary px-3 py-1.5 rounded-full border flex items-center gap-1.5">
-              <User className="size-3.5" /> {sessionUser.email}
+              <User className="size-3.5" /> {user?.email}
             </span>
             <Button
               variant="outline"

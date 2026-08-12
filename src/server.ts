@@ -44,18 +44,74 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+function addSecurityHeaders(response: Response): Response {
+  try {
+    response.headers.set("X-Frame-Options", "DENY");
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    response.headers.set(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    );
+    response.headers.set(
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+    );
+    response.headers.set(
+      "Content-Security-Policy",
+      "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' data: https://fonts.gstatic.com; " +
+        "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com; " +
+        "connect-src 'self' https://*.supabase.co wss://*.supabase.co; " +
+        "frame-ancestors 'none'; " +
+        "object-src 'none';",
+    );
+    return response;
+  } catch (e) {
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set("X-Frame-Options", "DENY");
+    newHeaders.set("X-Content-Type-Options", "nosniff");
+    newHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    newHeaders.set(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    );
+    newHeaders.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+    newHeaders.set(
+      "Content-Security-Policy",
+      "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' data: https://fonts.gstatic.com; " +
+        "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com; " +
+        "connect-src 'self' https://*.supabase.co wss://*.supabase.co; " +
+        "frame-ancestors 'none'; " +
+        "object-src 'none';",
+    );
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: newHeaders,
+    });
+  }
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return addSecurityHeaders(normalized);
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
+      const errResponse = new Response(renderErrorPage(), {
         status: 500,
         headers: { "content-type": "text/html; charset=utf-8" },
       });
+      return addSecurityHeaders(errResponse);
     }
   },
 };

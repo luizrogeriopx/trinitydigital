@@ -82,6 +82,36 @@ export function SiteDataProvider({
     return () => subscription.unsubscribe();
   }, []);
 
+  // User inactivity timeout (15 minutes)
+  useEffect(() => {
+    if (!user) return;
+
+    const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+    let timeoutId: any;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(async () => {
+        await supabase.auth.signOut();
+        toast.warning("Sessão encerrada por inatividade. Por segurança, faça login novamente.");
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    const events = ["mousemove", "keydown", "click", "scroll"];
+    events.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
+
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach((event) => {
+        window.removeEventListener(event, resetTimer);
+      });
+    };
+  }, [user]);
+
   const refreshData = async () => {
     try {
       setLoading(true);
